@@ -6,3 +6,7 @@
 </label>
 
 <button (click)="sendMessage()">Send message</button>
+
+<h4 *ngFor="let message of messages">
+  {{message}}
+</h4>
