@@ -8,7 +8,7 @@
     <input type="text" [formControl]="messageFormControl">
   </label>
 
-  <button (click)="sendMessage()" mat-raised-button color="primary">Send message</button>
+  <button (click)="sendMessage()">Send message</button>
   <h5
     *ngIf="clientsTyping.length > 0"
     style="color: burlywood">
@@ -33,7 +33,7 @@
     <input type="text" [formControl]="nameFormControl">
   </label>
 
-  <button (click)="sendName()">Send name</button>
+  <button mat-raised-button color="primary" (click)="sendName()">Send name</button>
 </div>
 
 <div *ngIf="clients$ | async as clients">
