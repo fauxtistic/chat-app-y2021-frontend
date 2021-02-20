@@ -8,7 +8,7 @@
     <input type="text" [formControl]="messageFormControl">
   </label>
 
-  <button (click)="sendMessage()">Send message</button>
+  <button (click)="sendMessage()" mat-raised-button color="primary">Send message</button>
   <h5
     *ngIf="clientsTyping.length > 0"
     style="color: burlywood">
