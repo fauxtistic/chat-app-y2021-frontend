@@ -1,3 +1,14 @@
 <a routerLink="/">Home</a> ----
-<a routerLink="/chats">Chats</a>
+  <span>
+    <a routerLink="/chats">Chats</a>
+  </span>
+  <span *ngIf="onlineClients > 0">
+     ({{onlineClients}} online)
+  </span>
+  <span *ngIf="newMessages === 1" style="color: darkred">
+     1 new message!
+  </span>
+  <span *ngIf="newMessages > 1" style="color: darkred">
+     {{newMessages}} new messages!
+  </span>
 <router-outlet></router-outlet>

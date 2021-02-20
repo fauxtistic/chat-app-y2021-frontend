@@ -1,7 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ChatService} from './shared/chat.service';
-import {Subscription} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {debounceTime, take, takeUntil} from 'rxjs/operators';
+import {ChatClient} from './shared/chat-client.model';
+import {ChatMessage} from './shared/chat-message.model';
 
 @Component({
   selector: 'app-chat',
@@ -10,27 +13,84 @@ import {Subscription} from 'rxjs';
 })
 export class ChatComponent implements OnInit, OnDestroy {
 
-  message = new FormControl('');
-  messages: string[] = [];
-  sub: Subscription = new Subscription();
+  messageFormControl = new FormControl('');
+  nameFormControl = new FormControl('');
+  messages: ChatMessage[] = [];
+  clientsTyping: ChatClient[] = [];
+  clients$: Observable<ChatClient[]>;
+  error$: Observable<string>;
+  unsubscriber$ = new Subject();
+  chatClient: ChatClient;
 
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
-    this.sub = this.chatService.listenToMessages()
+    this.chatService.countNewMessages = false; // maybe unnecessary when it's called in appcomponent listenforwelcome
+    this.clients$ = this.chatService.listenForClients();
+    this.error$ = this.chatService.listenForErrors();
+    this.messageFormControl.valueChanges
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        debounceTime(500)
+      )
+      .subscribe((value) => {
+        this.chatService.sendTyping(value.length > 0);
+      });
+    this.chatService.listenToMessages()
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe(message => {
         this.messages.push(message);
       });
-  }
-
-  ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
+    this.chatService.listenForClientTyping()
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
+      .subscribe((chatClient) => {
+        // some of this might be overkill according to Lars as backend should already handle some of it?
+        if (chatClient.typing && !this.clientsTyping.find((c) => c.id === chatClient.id)) {
+          this.clientsTyping.push(chatClient);
+        } else {
+          this.clientsTyping = this.clientsTyping.filter((c) => c.id !== chatClient.id );
+        }
+      });
+    this.chatService.listenForWelcome()
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
+      .subscribe(welcome => {
+        this.messages = welcome.messages;
+        this.chatClient = this.chatService.chatClient = welcome.client;
+        for (const client of welcome.clients) {
+          if (client.typing) {
+            this.clientsTyping.push(client);
+          }
+        }
+      });
+    // if already entered name earlier
+    if (this.chatService.chatClient) {
+      this.chatService.sendName(this.chatService.chatClient.name);
     }
   }
 
+  ngOnDestroy(): void {
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
+    this.chatService.countNewMessages = true;
+    this.chatService.sendTyping(false);
+  }
+
   sendMessage(): void {
-    console.log(this.message.value);
-    this.chatService.sendMessage(this.message.value);
+    console.log(this.messageFormControl.value);
+    this.chatService.sendMessage(this.messageFormControl.value);
+    this.messageFormControl.patchValue('');
+  }
+
+  sendName(): void {
+    // remember validate name in service
+    if (this.nameFormControl.value) {
+      this.chatService.sendName(this.nameFormControl.value);
+    }
   }
 }

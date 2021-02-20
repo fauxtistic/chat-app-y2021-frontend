@@ -1,12 +1,47 @@
-<h1>HELLO WORLD</h1>
+<div *ngIf="error$ | async as error" style="color: darkred">
+  {{error}}
+</div>
+<div *ngIf="chatClient">
+  <h2>Hi {{chatClient.name}}</h2>
+  <label>
+    Message:
+    <input type="text" [formControl]="messageFormControl">
+  </label>
 
-<label>
-  Message:
-  <input type="text" [formControl]="message">
-</label>
+  <button (click)="sendMessage()">Send message</button>
+  <h5
+    *ngIf="clientsTyping.length > 0"
+    style="color: burlywood">
+    <span
+      *ngFor="let client of clientsTyping; let i = index">
+      {{client.name}}
+      <span *ngIf="clientsTyping.length - 1 > i && i < clientsTyping.length-2">, </span>
+      <span *ngIf="clientsTyping.length > 1 && i === clientsTyping.length-2"> and </span>
+    </span>
+    <span *ngIf="clientsTyping.length === 1"> is typing</span>
+    <span *ngIf="clientsTyping.length > 1"> are typing</span>
+  </h5>
+  <h2>Messages:</h2>
+  <h4 *ngFor="let message of messages">
+    {{message.timestamp | date: 'h:mm'}} | {{message.sender?.name}}: {{message.message}}
+  </h4>
+</div>
+<div *ngIf="!chatClient">
+  <h2>Introduce yourself</h2>
+  <label>
+    Name:
+    <input type="text" [formControl]="nameFormControl">
+  </label>
 
-<button (click)="sendMessage()">Send message</button>
+  <button (click)="sendName()">Send name</button>
+</div>
 
-<h4 *ngFor="let message of messages">
-  {{message}}
-</h4>
+<div *ngIf="clients$ | async as clients">
+  <h2>{{clients.length}} clients:</h2>
+  <ul>
+    <li *ngFor="let client of clients">
+      {{client.name}}
+    </li>
+  </ul>
+</div>
+
