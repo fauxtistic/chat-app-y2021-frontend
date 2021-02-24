@@ -5,6 +5,7 @@ import { ChatRoutingModule } from './chat-routing.module';
 import { ChatComponent } from './chat.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
     ChatRoutingModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatCardModule,
   ]
 })
 export class ChatModule { }
