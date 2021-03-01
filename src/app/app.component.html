@@ -1,4 +1,7 @@
-<a routerLink="/">Home</a> ----
+<div fxLayout="column" fxFill>
+<div fxLayout="row" fxLayoutGap="5px">
+<a routerLink="/">Home</a>
+  <span>----</span>
   <span>
     <a routerLink="/chats">Chats</a>
   </span>
@@ -11,4 +14,6 @@
   <span *ngIf="newMessages > 1" style="color: darkred">
      {{newMessages}} new messages!
   </span>
-<router-outlet></router-outlet>
+</div>
+<router-outlet class="router-flex"></router-outlet>
+</div>
