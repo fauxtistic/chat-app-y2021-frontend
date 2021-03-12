@@ -9,14 +9,14 @@ router-outlet.router-flex + * {
   flex-direction: column;
 }
 
-.primary-text-color {
+.primary-color {
   color: $primary;
 }
 
-.accent-text-color {
+.accent-color {
   color: $accent;
 }
 
-.warn-text-color {
+.warn-color {
   color: $warn;
 }

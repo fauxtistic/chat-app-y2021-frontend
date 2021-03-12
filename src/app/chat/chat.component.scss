@@ -1,9 +1,20 @@
-mat-card.mat-override {
-  background-color: sandybrown;
-  border: 5px solid #000;
-  border-radius: 15px;
+mat-card.card-override {
+  border: 3px solid indigo;
+  border-radius: 10px;
+}
+
+mat-card-header.header-override {
+  border-bottom: 2px solid indigo;
 }
 
 .scrollable-list {
   overflow: auto;
+}
+
+.mat-other {
+  color: black;
+}
+
+.mat-self {
+  color: red;
 }
