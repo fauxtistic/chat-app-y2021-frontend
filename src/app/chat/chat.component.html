@@ -26,8 +26,8 @@
         <mat-list fxFlex class="scrollable-list">
           <mat-list-item *ngFor="let message of messages">
             <img matListAvatar src="https://www.w3schools.com/howto/img_avatar.png" style="border-radius: 50%" alt="avatar">
-            <div mat-line class="primary-color">{{message.timestamp | date: 'h:mm'}} | {{message.sender?.name}}:</div>
-            <div mat-line [ngClass]="(chatClient.name === message.sender?.name) ? 'mat-self' : 'mat-other'">{{message.message}}</div>
+            <div mat-line class="primary-color">{{message.timestamp | date: 'h:mm'}} | {{message.sender}}:</div>
+            <div mat-line [ngClass]="(chatClient.name === message.sender) ? 'mat-self' : 'mat-other'">{{message.message}}</div>
             <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>
