@@ -1,6 +1,9 @@
 <div *ngIf="error$ | async as error" style="color: darkred">
   {{error}}
 </div>
+<div *ngIf="!socketId" style="color: darkred">
+  You are not connected!
+</div>
 <div fxLayout="row" fxFlex *ngIf="chatClient" style="padding: 20px" fxLayoutGap="10px">
   <div fxLayout="column" fxFlex="30">
     <mat-card fxFlex *ngIf="clients$ | async as clients" class="card-override">

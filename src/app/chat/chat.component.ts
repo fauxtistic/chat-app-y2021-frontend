@@ -78,16 +78,16 @@ export class ChatComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscriber$)
       )
       .subscribe((id) => {
-        console.log('connect id', id);
         this.socketId = id;
+        console.log('connect id', id);
       });
     this.chatService.listenForDisconnect()
       .pipe(
         takeUntil(this.unsubscriber$)
       )
       .subscribe((id) => {
-        console.log('disconnect id', id);
         this.socketId = id;
+        console.log('disconnect id', id);
       });
   }
 
