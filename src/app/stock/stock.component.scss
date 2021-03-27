@@ -1,0 +1,30 @@
+mat-card.card-override {
+  border: 3px solid indigo;
+  border-radius: 10px;
+}
+
+mat-card-header.header-override {
+  border-bottom: 2px solid indigo;
+}
+
+.scrollable-list {
+  overflow: auto;
+}
+
+.stock-increase {
+  color: green;
+  margin-left: 10px;
+  font-size: 1em;
+}
+
+.stock-decline {
+  color: red;
+  margin-left: 10px;
+  font-size: 1em;
+}
+
+.stock-stagnant {
+  color: black;
+  margin-left: 10px;
+  font-size: 1em;
+}

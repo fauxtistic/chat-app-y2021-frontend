@@ -1,0 +1,36 @@
+<div fxLayout="row" fxFlex style="padding: 20px" fxLayoutGap="10px">
+  <div fxLayout="column" fxFlex="30">
+    <mat-card fxFlex *ngIf="stocks" class="card-override">
+      <mat-card-header class="header-override">
+        <h3>Stocks</h3>
+      </mat-card-header>
+      <mat-card-content style="padding-top: 10px">
+        <mat-list fxFlex class="scrollable-list">
+          <mat-list-item style="cursor: cell" *ngFor="let stock of stocks" (click)="setSelectedStock(stock)">
+            <mat-line [ngClass]="{'stock-increase': stock.currentValue > stock.oldValue, 'stock-decline': stock.currentValue < stock.oldValue, 'stock-stagnant': stock.currentValue === stock.oldValue}">{{stock.name}} -- {{stock.currentValue}}</mat-line>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="column" fxFlex="70">
+    <mat-card fxFlex fxLayout="column" class="card-override">
+      <mat-card-header class="header-override">
+        <span *ngIf="!selectedStock"><h3>Select a stock in the list...</h3></span>
+        <span *ngIf="selectedStock"><h3>{{selectedStock.name}}</h3></span>
+      </mat-card-header>
+      <mat-card-content fxFlex fxLayout="column" style="padding-top: 10px" *ngIf="selectedStock">
+        <p style="font-size: 1.25em">{{selectedStock.description}}</p>
+      </mat-card-content>
+      <mat-card-actions *ngIf="selectedStock" fxFlex="60px">
+        <mat-form-field>
+          <mat-label>Enter new value:</mat-label>
+          <input matInput type="number" [formControl]="stockValueFormControl">
+          <button mat-button matSuffix (click)="updateStock()">Update</button>
+          <button mat-button matSuffix (click)="deleteStock()">Delete</button>
+        </mat-form-field>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
