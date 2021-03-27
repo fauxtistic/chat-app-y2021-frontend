@@ -28,3 +28,11 @@ mat-card-header.header-override {
   margin-left: 10px;
   font-size: 1em;
 }
+
+.mat-list-item:hover {
+  background-color: lightgrey;
+}
+
+.mat-raised-button:hover {
+  background-color: lightgrey;
+}

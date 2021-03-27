@@ -35,19 +35,18 @@ export class StockComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscriber$)
       )
       .subscribe(stock => {
-        /*const stockUpdated = this.stocks.find((s) => s.id === stock.id);
+        const stockUpdated = this.stocks.find((s) => s.id === stock.id);
         stockUpdated.currentValue = stock.currentValue;
         stockUpdated.dateOfCurrentValue = stock.dateOfCurrentValue;
         stockUpdated.dateOfOldValue = stock.dateOfOldValue;
-        stockUpdated.oldValue = stock.oldValue;*/
+        stockUpdated.oldValue = stock.oldValue;
       });
     this.stockService.listenForStockDeletion()
       .pipe(
         takeUntil(this.unsubscriber$)
       )
       .subscribe(stock => {
-        /*console.log('deletedstock', stock);
-        this.stocks = this.stocks.filter((s) => s.id !== stock.id);*/
+        this.stocks = this.stocks.filter((s) => s.id !== stock.id);
         this.setSelectedStock(null);
       });
   }

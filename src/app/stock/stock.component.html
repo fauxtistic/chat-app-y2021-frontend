@@ -6,7 +6,7 @@
       </mat-card-header>
       <mat-card-content style="padding-top: 10px">
         <mat-list fxFlex class="scrollable-list">
-          <mat-list-item style="cursor: cell" *ngFor="let stock of stocks" (click)="setSelectedStock(stock)">
+          <mat-list-item style="cursor: pointer" *ngFor="let stock of stocks" (click)="setSelectedStock(stock)">
             <mat-line [ngClass]="{'stock-increase': stock.currentValue > stock.oldValue, 'stock-decline': stock.currentValue < stock.oldValue, 'stock-stagnant': stock.currentValue === stock.oldValue}">{{stock.name}} -- {{stock.currentValue}}</mat-line>
             <mat-divider></mat-divider>
           </mat-list-item>
@@ -26,9 +26,9 @@
       <mat-card-actions *ngIf="selectedStock" fxFlex="60px">
         <mat-form-field>
           <mat-label>Enter new value:</mat-label>
-          <input matInput type="number" [formControl]="stockValueFormControl">
-          <button mat-button matSuffix (click)="updateStock()">Update</button>
-          <button mat-button matSuffix (click)="deleteStock()">Delete</button>
+          <input matInput type="number" step=10 [formControl]="stockValueFormControl">
+          <button mat-raised-button matSuffix class="primary-color" (click)="updateStock()">Update</button>
+          <button mat-raised-button matSuffix class="warn-color" (click)="deleteStock()">Delete</button>
         </mat-form-field>
       </mat-card-actions>
     </mat-card>
