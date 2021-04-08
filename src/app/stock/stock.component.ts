@@ -47,7 +47,7 @@ export class StockComponent implements OnInit, OnDestroy {
       )
       .subscribe(stock => {
         this.stocks = this.stocks.filter((s) => s.id !== stock.id);
-        this.setSelectedStock(null);
+        this.selectedStock = null;
       });
   }
 
