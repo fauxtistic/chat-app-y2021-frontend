@@ -46,6 +46,7 @@ export class StockComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscriber$)
       )
       .subscribe(stock => {
+        console.log('notice received');
         this.stocks = this.stocks.filter((s) => s.id !== stock.id);
         this.selectedStock = null;
       });
