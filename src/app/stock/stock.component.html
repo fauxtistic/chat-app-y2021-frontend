@@ -1,6 +1,6 @@
 <div fxLayout="row" fxFlex style="padding: 20px" fxLayoutGap="10px">
   <div fxLayout="column" fxFlex="30">
-    <mat-card fxFlex *ngIf="stocks" class="card-override">
+    <mat-card fxFlex *ngIf="stocks$ | async as stocks" class="card-override">
       <mat-card-header class="header-override">
         <h3>Stocks</h3>
       </mat-card-header>

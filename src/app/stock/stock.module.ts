@@ -11,6 +11,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {ReactiveFormsModule} from '@angular/forms';
+import {NgxsModule} from '@ngxs/store';
+import {StockState} from './state/stock.state';
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatIconModule,
     MatListModule,
     ReactiveFormsModule,
+    NgxsModule.forFeature([StockState])
   ]
 })
 export class StockModule { }

@@ -4,6 +4,9 @@ import {Stock} from './shared/stock.model';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
+import {StockState} from './state/stock.state';
+import {Select, Store} from '@ngxs/store';
+import {ListenForAllStocks, ListenForStockDeletion, ListenForStockUpdate, StopListeningForStocks} from './state/stock.actions';
 
 @Component({
   selector: 'app-stock',
@@ -14,47 +17,23 @@ export class StockComponent implements OnInit, OnDestroy {
 
   stockValueFormControl = new FormControl(0);
   error$: Observable<string>;
-  unsubscriber$ = new Subject();
-  stocks: Stock[] = [];
+  @Select(StockState.stocks)
+  stocks$: Observable<Stock[]>;
   selectedStock: Stock;
 
-  constructor(private stockService: StockService) { }
+  constructor(private stockService: StockService,
+              private store: Store) { }
 
   ngOnInit(): void {
-    this.stockService.listenForAllStocks()
-      .pipe(
-        takeUntil(this.unsubscriber$)
-      )
-      .subscribe(stocks => {
-        this.stocks = stocks;
-      });
+    this.store.dispatch(new ListenForAllStocks());
+    this.store.dispatch(new ListenForStockUpdate());
+    this.store.dispatch(new ListenForStockDeletion());
     const date = new Date();
     this.stockService.requestAllStocks(date);
-    this.stockService.listenForStockUpdate()
-      .pipe(
-        takeUntil(this.unsubscriber$)
-      )
-      .subscribe(stock => {
-        const stockUpdated = this.stocks.find((s) => s.id === stock.id);
-        stockUpdated.currentValue = stock.currentValue;
-        stockUpdated.dateOfCurrentValue = stock.dateOfCurrentValue;
-        stockUpdated.dateOfOldValue = stock.dateOfOldValue;
-        stockUpdated.oldValue = stock.oldValue;
-      });
-    this.stockService.listenForStockDeletion()
-      .pipe(
-        takeUntil(this.unsubscriber$)
-      )
-      .subscribe(stock => {
-        console.log('notice received');
-        this.stocks = this.stocks.filter((s) => s.id !== stock.id);
-        this.selectedStock = null;
-      });
   }
 
   ngOnDestroy(): void {
-    this.unsubscriber$.next();
-    this.unsubscriber$.complete();
+    this.store.dispatch(new StopListeningForStocks());
   }
 
   setSelectedStock(stock: Stock): void {
@@ -79,6 +58,7 @@ export class StockComponent implements OnInit, OnDestroy {
   deleteStock(): void {
     const stockToDelete = this.selectedStock;
     this.stockService.deleteStock(stockToDelete);
+    this.selectedStock = null;
   }
 
 }
